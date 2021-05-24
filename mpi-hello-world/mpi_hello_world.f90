@@ -4,12 +4,14 @@ program mpi_hello_world
   real, parameter :: MASTER_RANK = 0
 
   integer :: process_rank, cluster_size, ierror
+  character(32) :: hostname
 
   call MPI_INIT(ierror)
   call MPI_COMM_SIZE(MPI_COMM_WORLD, cluster_size, ierror)
   call MPI_COMM_RANK(MPI_COMM_WORLD, process_rank, ierror)
+  call get_environment_variable('HOSTNAME',hostname)
 
-  print *, "Hello World, I'm Process with Rank:", process_rank
+  print *, "Hello World, I'm Process with Rank:", process_rank, "From Host:", hostname
 
   call MPI_FINALIZE(ierror)
 end program mpi_hello_world

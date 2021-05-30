@@ -1,4 +1,4 @@
-! Each process will generate 4 random number, and then the main process will compute
+! Each process will generate 4 random numbers, and then the main process will compute
 ! the mean of all generated random numbers
 program reduce
   use mpi

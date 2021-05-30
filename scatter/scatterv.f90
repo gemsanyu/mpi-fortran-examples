@@ -22,6 +22,7 @@ program scatterv
 
   if (arr_size < cluster_size) then
     print *, "The total array size can't be smaller than the cluster size"
+    stop
   end if
 
   ! initiate whole array in master process

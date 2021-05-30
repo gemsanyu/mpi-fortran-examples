@@ -2,13 +2,13 @@ program scatter
   use mpi
   implicit none
 
+  ! arr -> arr_p(:) -> mengkuadratkan data arr_p^2
+  ! arr_p(:) -> arr_squared
   integer :: process_rank, cluster_size, ierror
   integer, parameter :: MASTER_RANK = 0
   integer, allocatable :: arr(:), arr_p(:), arr_squared(:)
   integer :: i
   integer :: arr_size, arr_p_size
-
-
   character(100) :: arr_size_char
 
   call MPI_INIT(ierror)
@@ -22,6 +22,7 @@ program scatter
 
   if (mod(arr_size, cluster_size) /= 0) then
     print *, "The total array size must be divisible by the cluster size"
+    stop
   end if
 
   ! initiate whole array in master process
@@ -49,6 +50,7 @@ program scatter
   ! gather again
   call MPI_GATHER(arr_p, arr_p_size, MPI_INT, arr_squared, arr_p_size, MPI_INT, &
     MASTER_RANK, MPI_COMM_WORLD, ierror)
+  call MPI_BARRIER(MPI_COMM_WORLD, ierror)
 
   if (MASTER_RANK == process_rank) then
     print *, arr_squared

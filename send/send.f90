@@ -37,21 +37,23 @@ program send
       else
         start_idx = receiver_rank*arr_p_size + 1
         end_idx = (receiver_rank+1)*arr_p_size
-        call MPI_SEND(arr(start_idx:end_idx), arr_p_size, MPI_INT, receiver_rank, 1, MPI_COMM_WORLD, ierror)
+        call MPI_SEND(arr(start_idx:end_idx), arr_p_size, MPI_INT, &
+          receiver_rank, 1, MPI_COMM_WORLD, ierror)
       end if
     end do
   end if
 
   ! All process except the master prepare to receive message
   if (MASTER_RANK /= process_rank) then
-    call MPI_RECV(arr_p(1:arr_p_size), arr_p_size, MPI_INT, MASTER_RANK, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierror)
+    call MPI_RECV(arr_p(1:arr_p_size), arr_p_size, MPI_INT, MASTER_RANK, &
+     1, MPI_COMM_WORLD, MPI_STATUS_IGNORE, ierror)
   end if
 
   print *,"Hi I'm rank:",process_rank,"I have arr_p=",arr_p(:)
 
-  deallocate(arr_p)
-  if (MASTER_RANK == process_rank) then
-    deallocate(arr)
-  end if
+  ! deallocate(arr_p)
+  ! if (MASTER_RANK == process_rank) then
+  !   deallocate(arr)
+  ! end if
   call MPI_FINALIZE(ierror)
 end program send
